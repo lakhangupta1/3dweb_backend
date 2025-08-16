@@ -5,6 +5,7 @@ const SECRET_KEY = process.env.JWT_SECRET || 'lakhan_gupta';
 
 // Generate JWT token
 function generateToken(user) {
+    console.log(" lakhan gupta ");
     // Payload can include any user info you need
     const payload = {
         id: user._id,
