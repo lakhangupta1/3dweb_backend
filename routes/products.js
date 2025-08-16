@@ -28,9 +28,14 @@ function auth (req, res , next){
         })
   }
 }
+ 
+
+ // here i can use auth in middleware  like 
+// router.get('/', auth , async (req, res)
+
 
 // GET /api/products
-router.get('/', auth  , async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     console.log(" data get ")
     // If using Postgres, run SELECT; JSON fallback handled in db.js
@@ -43,8 +48,11 @@ router.get('/', auth  , async (req, res) => {
   }
 });
 
+ // here i can use auth in middleware  like 
+// router.get('/:id',  auth ,  async (req, res)
+ 
 // GET /api/products/:id
-router.get('/:id',  auth ,  async (req, res) => {
+router.get('/:id' ,  async (req, res) => {
   try {
     console.log(" data get  by id ");
     console.log(" req.body.params  -> ", req.params.id);
