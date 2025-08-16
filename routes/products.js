@@ -5,6 +5,8 @@ const router = express.Router();
 const db = require('../db');
 const { createProducts } = require('./createProducts');
 const { verifyToken }  = require("../utils/jwt")
+const productModel = require('../models/Products');
+
 
 function auth (req, res , next){
   try{
@@ -68,5 +70,55 @@ router.get('/:id' ,  async (req, res) => {
 });
 
 router.post('/create/products', createProducts);
+router.get('/created/products', async(req, res )=>{
+  try{
+
+    let products = await productModel.find() || [];
+    if(products && products.length){
+      return res.status(200).json({
+        payload : products,
+        error : false,
+        message : 'successfully get products.'
+      })
+    }
+
+
+  }catch(error){
+    return res.status(404).json({
+      error: true,
+      payload : [],
+      message : " something went wrong on server "
+    })
+  }
+});
+
+
+
+router.post('/delete/product', async (req, res )=>{
+  try {
+    // console.log("params -> ", req.query);
+    const productId = req.query._id;
+    const result = await productModel.deleteOne({ _id: productId });
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        error: true,
+        payload: [],
+        message: "Product not found or already deleted."
+      });
+    }
+    return res.status(200).json({
+      payload: [],
+      error: false,
+      message: "Successfully deleted product."
+    });
+  } catch (error) {
+    console.log("error -> ", error);
+    return res.status(500).json({
+      error: true,
+      payload: [],
+      message: "Something went wrong on server."
+    });
+  }
+});
 
 module.exports = router;
