@@ -8,6 +8,7 @@ const {generateToken, verifyToken } = require("../utils/jwt");
 // Register route
 router.post('/register', async (req, res) => {
     try {
+        
         const { username, email, password } = req.body;
         let user = await User.findOne({ email });
         if (user) return res.status(400).json({ message: 'User already exists' });
@@ -16,9 +17,9 @@ router.post('/register', async (req, res) => {
         await user.save();
 
         const token = generateToken(user);
-        res.status(201).json({ user: { id: user._id, username, email }, token });
+        res.status(201).json({ error : false ,  user: { id: user._id, username, email }, token });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({  error : true,  message: err.message });
     }
 });
 
@@ -28,14 +29,13 @@ router.post('/login', async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
         if (!user) return res.status(400).json({ message: 'Invalid credentials' });
-
         const isMatch = await user.comparePassword(password);
         if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
         const token = generateToken(user);
-        res.status(200).json({ user: { id: user._id, username: user.username, email }, token });
+        res.status(200).json({  error : false  , user: { id: user._id, username: user.username, email }, token });
     } catch (err) {
-        res.status(500).json({ message: err.message });
+        res.status(500).json({  error : true, message: err.message });
     }
 });
 
