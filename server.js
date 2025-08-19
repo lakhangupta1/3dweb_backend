@@ -8,8 +8,9 @@ const authRoutes = require("./routes/auth")
 const app = express();
 app.use(cors());
 app.use(express.json());
-// app.use('/models', express.static(path.join(__dirname, 'public/models')));
 connectDB();
+// app.use("/uploads", express.static("uploads"));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use('/api/products', productsRouter);
 app.use('/api', productsRouter )
