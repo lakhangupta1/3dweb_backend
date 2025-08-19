@@ -6,6 +6,7 @@ const connectDB = require('./config/db');
 const createProducts = require('./routes/createProducts');
 const authRoutes = require("./routes/auth")
 const app = express();
+const path = require('path');
 app.use(cors());
 app.use(express.json());
 connectDB();
@@ -18,7 +19,6 @@ app.use('/api/auth', authRoutes);
 
 
 // serve static from frontend build if provided (for simple single-host deploy)
-const path = require('path');
 const frontendBuild = path.join(__dirname, '..', 'frontend', 'dist');
 app.use(express.static(frontendBuild));
 app.get('*', (req, res) => {
